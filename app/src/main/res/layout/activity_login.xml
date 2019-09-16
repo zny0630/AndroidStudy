@@ -4,28 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-    tools:context=".LoginActivity"
-    android:background="#FFC1C1"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="登录"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-=======
     tools:context="com.example.myapplication.LoginActivity"
     android:background="#ffc700"
     android:orientation="vertical">
     <include layout="@layout/tool_bar" />
->>>>>>> zuoye
 
     <ImageView
         android:layout_width="match_parent"
@@ -61,10 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#ffffffff"
-<<<<<<< HEAD
-=======
             android:inputType="textPassword"
->>>>>>> zuoye
             android:hint="请输入密码"
             android:paddingLeft="20dp"
             android:textColor="#ff000000"
@@ -75,11 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-<<<<<<< HEAD
-            android:background="#FFDAB9"
-=======
             android:background="#f7a52e"
->>>>>>> zuoye
             android:text="登录"
             android:textColor="@android:color/white"
             android:textSize="25sp" />
@@ -99,11 +74,7 @@
                 android:text="立即注册"
                 android:layout_marginLeft="50dp"
                 android:textColor="@android:color/white"
-<<<<<<< HEAD
-                android:background="#FFC1C1"
-=======
                 android:background="@null"
->>>>>>> zuoye
                 android:textSize="20sp" />
 
             <Button
@@ -115,11 +86,7 @@
                 android:text="找回密码？"
                 android:layout_marginRight="50dp"
                 android:textColor="@android:color/white"
-<<<<<<< HEAD
-                android:background="#FFC1C1"
-=======
                 android:background="@null"
->>>>>>> zuoye
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>

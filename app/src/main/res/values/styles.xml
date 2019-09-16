@@ -8,8 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<<<<<<< HEAD
-=======
     <style name="NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -34,5 +32,4 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/selector_nav_text</item>
     </style>
->>>>>>> zuoye
 </resources>

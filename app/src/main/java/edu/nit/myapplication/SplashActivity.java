@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.helloworld.R;
+
 import java.util.Timer;
 import java.util.TimerTask;
 

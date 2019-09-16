@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.helloworld.R;
+
 import edu.nit.myapplication.Utils.MD5Utils;
 
 public class RegisterActivity extends AppCompatActivity {
