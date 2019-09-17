@@ -11,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.helloworld.R;
-import com.example.myapplication.SettingActivity;
+import com.example.myapplication.activity.RegisterActivity;
 
 
 public class StatusUtils {
@@ -55,7 +55,7 @@ public class StatusUtils {
         });
     }
 
-    public static void clearLoginInfo(SettingActivity settingActivity) {
+    public static void clearLoginInfo(RegisterActivity.SettingActivity settingActivity) {
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //不带数据界面跳转
-                Intent intent=new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent=new Intent(SplashActivity.this, ForgetPasswordActivity.MainActivity.class);
                 startActivity(intent);
                 SplashActivity.this.finish();
             }
