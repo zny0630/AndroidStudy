@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.example.helloworld.R;
 import com.example.myapplication.activity.RegisterActivity;
+import com.example.myapplication.activity.UserInfoActivity;
 
 
 public class StatusUtils {
@@ -19,7 +20,7 @@ public class StatusUtils {
      * 设置沉浸式状态栏
      * @param activity
      */
-    public static void setImmersionMode(Activity activity) {
+    public static void setImmersionMode(UserInfoActivity activity) {
         Window window = activity.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
