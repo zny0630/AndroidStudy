@@ -1,167 +1,173 @@
 package com.example.myapplication.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.helloworld.R;
-import com.example.myapplication.entity.UserInfo;
-import com.example.myapplication.entity.UserInfo;
-import com.example.myapplication.service.UserInfoService;
-import com.example.myapplication.service.UserInfoServiceImpl;
+import com.example.myapplication.entity.User;
+import com.example.myapplication.service.UserService;
+import com.example.myapplication.service.UserServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class user_info_Activity extends AppCompatActivity implements View.OnClickListener {
-
-    //1.定义界面上的控件对象
-    private TextView tvNickname, tvSignature, tvUsername, tvSex;
-    private LinearLayout nicknameLayout, sexLayout, signatureLayout;
+public class UserInfoActivity extends AppCompatActivity {
+    //定义所需变量
+    private User user;
+    private UserService userService;
+    private String username;
+    //定义控件对象
     private Toolbar toolbar;
-
-    private UserInfo user;
-    private UserInfoService service;
-    private String spUsername;
-
+    private LinearLayout fLayout,sLayout,tLayout,forthLayout,fifthLayout;
+    private TextView usernameContent,nicknameContent,sexContent,signatureContent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        initToolbar();
         initData();
-        //5.获取所有控件对象，设置监听器（必须）
         initView();
-    }
-
-    private void initToolbar() {
-        toolbar = findViewById(R.id.title_toolbar);
-        toolbar.setTitle("个人信息");
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);//设置返回键
-//            actionBar.setHomeButtonEnabled(true);//设置是否是首页
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        final String[] sexArr = new String[]{"男","女"};
+        initToolbar();
+        //从数据库，网络或上一个界面的数据
+        tLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                user_info_Activity.this.finish();
+                String nick = nicknameContent.getText().toString();
+                Intent intent = new Intent(UserInfoActivity.this,ModifyNicknameActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("nickname",nick);
+                bundle.putString("title","设置昵称");
+                bundle.putInt("flag",1);
+                intent.putExtras(bundle);
+                startActivityForResult(intent,1);
+            }
+        });
+        forthLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String sex = sexContent.getText().toString();
+
+                List<String> sexs = Arrays.asList(sexArr);
+                int selected = sexs.indexOf(sex);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(UserInfoActivity.this);
+                dialog.setTitle("性别");
+                dialog.setCancelable(false);
+                dialog.setSingleChoiceItems(sexArr, selected, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        sexContent.setText(sexArr[i]);
+                        user.setSex(sexArr[i]);
+                        userService.modify(user);
+                        dialogInterface.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+        fifthLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //1获取已有内容
+                //2根据需要传递数据到下一个activity
+                //3启动下一个页面
+                String sign = signatureContent.getText().toString();
+                Intent intent = new Intent(UserInfoActivity.this,ModifySignatureActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("signature",sign);
+                bundle.putString("title","设置签名");
+                bundle.putInt("flag",1);
+                intent.putExtras(bundle);
+                startActivityForResult(intent,2);
             }
         });
     }
 
     private void initView() {
-        tvUsername = findViewById(R.id.tv_username);
-        tvNickname = findViewById(R.id.tv_username);
-        tvSignature = findViewById(R.id.time);
-        tvSex = findViewById(R.id.tv_version);
+        fLayout =findViewById(R.id.first_layout);
+        sLayout = findViewById(R.id.second_layout);
+        tLayout = findViewById(R.id.third_layout);
+        forthLayout = findViewById(R.id.forth_layout);
+        fifthLayout = findViewById(R.id.fifth_layout);
 
+        usernameContent = findViewById(R.id.username_content);
+        nicknameContent = findViewById(R.id.nickname_content);
+        sexContent = findViewById(R.id.sex_content);
+        signatureContent = findViewById(R.id.signature_content);
 
-        //设置数据库获取的数据
-        tvUsername.setText(user.getUsername());
-        tvNickname.setText(user.getNickname());
-        tvSex.setText(user.getSex());
+        usernameContent.setText(username);
+        nicknameContent.setText(user.getNickname());
+        sexContent.setText(user.getSex());
+        signatureContent.setText(user.getSignature());
+    }
 
+    private void initToolbar() {
+        toolbar = findViewById(R.id.title_bar);
+        toolbar.setTitle("个人信息");
+        setSupportActionBar(toolbar);
 
-        //设置监听器
-        nicknameLayout.setOnClickListener(this);
-        sexLayout.setOnClickListener(this);
-        signatureLayout.setOnClickListener(this);
-
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserInfoActivity.this.finish();
+            }
+        });
     }
 
     private void initData() {
-
-        service = new UserInfoServiceImpl(this);
-        user = service.get(spUsername);
-        if (user == null) {
-            user = new UserInfo();
-
-            user.setUsername(spUsername);
-            user.setNickname("课程助手");
-            user.setSignature("课程助手");
+        username = readLoginInfo();
+        userService = new UserServiceImpl(this);
+        user =userService.get(username);
+        if (user == null){
+            user = new User();
+            user.setUsername(username);
+            user.setNickname("123");
             user.setSex("男");
-            service.save(user);
+            user.setSignature("123");
+            userService.save(user);
         }
-
     }
 
-
-    private String readUserInfo() {
-        SharedPreferences sp = getSharedPreferences("userInfo", MODE_PRIVATE);
-        return sp.getString("loginUser", "");
+    private String readLoginInfo() {
+        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+        return sp.getString("loginUser","");
     }
 
     @Override
-    public void onClick(View view) {
-        //根据id分别进行事件处理
-        switch (view.getId()) {
-            case R.id.tv_username:
-                //将昵称，性别等信息传给ChangeUserInfoActivity进行修改保存并返回
-                modifyNickname();
-                break;
-            case R.id.tv_version:
-                //通过对话框修改
-                modifySex();
-                break;
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //对空数据返回异常做判断
+        if (data == null || resultCode != RESULT_OK){
+            Toast.makeText(UserInfoActivity.this,"未知错误",Toast.LENGTH_SHORT).show();
+        } else if (requestCode == 1 && resultCode == Activity.RESULT_OK && data!=null) {
+            String nickname = data.getStringExtra("nickname");
+            if (!TextUtils.isEmpty(nickname)) {
+                nicknameContent.setText(nickname);
+                user.setNickname(nickname);
+            }
+        } else if (requestCode == 2 && resultCode == Activity.RESULT_OK && data!=null){
+            String signature =data.getStringExtra("signature");
+            if (!TextUtils.isEmpty(signature)) {
+                signatureContent.setText(signature);
+                user.setSignature(signature);
+            }
         }
-    }
-
-    private void modifyNickname() {
-        //获取已有的内容
-        String nickname = tvNickname.getText().toString();
-        Intent intent = new Intent(user_info_Activity.this, change_user_infoAcitivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("title", "设置昵称");//标题栏的标题
-        bundle.putString("value", nickname);//内容
-        bundle.putInt("flag", 1);//用于区分修改昵称还是签名
-        intent.putExtras(bundle);
-        //启动下一个界面
-        startActivityForResult(intent, 1);
-    }
-
-    private void modifySignature() {
-        //获取已有的内容
-        String signature = tvSignature.getText().toString();
-        Intent intent = new Intent(user_info_Activity.this, change_user_infoAcitivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("title", "设置签名");//标题栏的标题
-        bundle.putString("value", signature);//内容
-        bundle.putInt("flag", 2);//用于区分修改昵称还是签名
-        intent.putExtras(bundle);
-        //启动下一个界面
-        startActivityForResult(intent, 1);
-    }
-
-    private void modifySex() {
-        final String[] datas = {"男","女"};
-        String sex = tvSex.getText().toString();
-
-        final List<String> sexs = Arrays.asList(datas);
-        int selected = sexs.indexOf(sex);
-        new AlertDialog.Builder(this)
-                .setTitle("性别")
-                .setSingleChoiceItems(datas, selected, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String sex = datas[which];
-                        tvSex.setText(sex);
-                        user.setSex(sex);
-                        service.modify(user);
-                        dialog.dismiss();
-                    }
-                }).show();
+        userService.modify(user);
     }
 }
-
