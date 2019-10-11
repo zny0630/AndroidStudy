@@ -2,23 +2,27 @@ package com.example.myapplication.entity;
 
 import java.io.Serializable;
 
-//entity类与数据库表一一对应
 public class User implements Serializable {
     private int _id;
     private String username;
-    private String nickname;
-    private String sex;
-    private String signature;
+    private  String nickname;
+    private  String sex;
+    private  String signature;
 
     public User() {
     }
 
-    public User(String username, String nickname, String sex, String signature) {
-        this.username = username;
-        this.nickname = nickname;
-        this.sex = sex;
-        this.signature = signature;
+    @Override
+    public String toString() {
+        return "User{" +
+                "_id=" + _id +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", signature='" + signature + '\'' +
+                '}';
     }
+
 
     public int get_id() {
         return _id;
@@ -60,13 +64,14 @@ public class User implements Serializable {
         this.signature = signature;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", sex='" + sex + '\'' +
-                ", signature='" + signature + '\'' +
-                '}';
+
+    public User(int _id, String username, String nickname, String sex, String signature) {
+        this._id = _id;
+        this.username = username;
+        this.nickname = nickname;
+        this.sex = sex;
+        this.signature = signature;
     }
+
+
 }

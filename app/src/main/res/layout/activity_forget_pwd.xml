@@ -7,7 +7,7 @@
     android:background="@drawable/bgimage"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context=".activity.Forget_pwd_Activity">
+    tools:context="com.example.myapplication.activity.Forget_pwd_Activity">
 
     <include layout="@layout/tool_bar"/>
     <TextView

@@ -5,66 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.SettingActivity">
+    android:background="#ffc700"
+    tools:context="com.example.myapplication.activity.SettingActivity">
 
-    <include layout="@layout/tool_bar"/>
+    <include layout="@layout/tool_bar" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:layout_marginTop="20sp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <TextView
-            android:id="@+id/modify_password"
+            android:id="@+id/modifyPassword"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/border1_text"
+            android:layout_height="45dp"
+            android:background="@drawable/edit_bg"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="20dp"
             android:text="修改密码"
-            android:textColor="#8a8a8a"
-            android:textSize="20sp"
-            android:drawableRight="@drawable/arrow_right"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:gravity="center_vertical"
-            android:drawablePadding="25sp"
-            android:paddingRight="35sp"
-            android:paddingLeft="35sp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:layout_marginBottom="20sp"
-        android:orientation="horizontal">
+            android:drawableEnd="@drawable/morrow"
+            />
         <TextView
-            android:id="@+id/setting_password_protect"
+            android:id="@+id/setSecret"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/border1_text"
+            android:layout_height="45dp"
+            android:drawablePadding="20dp"
+            android:background="@drawable/edit_bg"
             android:text="设置密保"
-            android:textColor="#8a8a8a"
-            android:textSize="20sp"
-            android:drawableRight="@drawable/arrow_right"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:gravity="center_vertical"
-            android:drawablePadding="25sp"
-            android:paddingRight="35sp"
-            android:paddingLeft="35sp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:orientation="horizontal">
+            android:drawableEnd="@drawable/morrow"
+            />
         <TextView
-            android:id="@+id/log_out_item"
+            android:id="@+id/exitLogin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/border1_text"
+            android:layout_height="45dp"
+            android:background="@drawable/edit_bg"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="20dp"
             android:text="退出登录"
-            android:textColor="#8a8a8a"
-            android:textSize="20sp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:gravity="center_vertical"
-            android:drawablePadding="25sp"
-            android:paddingRight="35sp"
-            android:paddingLeft="35sp"/>
-
+            android:drawableEnd="@drawable/morrow"
+            />
     </LinearLayout>
+
+
 
 </LinearLayout>

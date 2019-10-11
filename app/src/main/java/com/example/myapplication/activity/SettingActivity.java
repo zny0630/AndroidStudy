@@ -2,90 +2,92 @@ package com.example.myapplication.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.helloworld.R;
+import com.example.myapplication.Util.StatusUtils;
 
 public class SettingActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private TextView modifyPwd,settingpp,logOut;
-
+    private TextView psdLayout;
+    private TextView mibaoLayout;
+    private TextView exitLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         initToolbar();
         initView();
+    }
+    private void initView(){
+        psdLayout=findViewById(R.id.modifyPassword);
+        mibaoLayout=findViewById(R.id.setSecret);
+        exitLayout=findViewById(R.id.exitLogin);
+        psdLayout.setOnClickListener(new View.OnClickListener(){
 
-        modifyPwd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingActivity.this,modify_pwd_Activity.class);
+            public void onClick(View v) {
+                Intent intent=new Intent(SettingActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
-                SettingActivity.this.finish();
             }
         });
+        mibaoLayout.setOnClickListener(new View.OnClickListener(){
 
-        logOut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String username = readLoginInfo();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(SettingActivity.this);
-                dialog.setTitle("提示框");
-                dialog.setMessage("是否要退出登录？");
-                dialog.setCancelable(false);
-                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        savePref();
-                        boolean isLogin = false;
-                        Intent intent = new Intent();
-                        intent.putExtra("isLogin",isLogin);
-                        setResult(RESULT_OK,intent);
-                        finish();
-                    }
-                });
-                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
-                dialog.show();
+            public void onClick(View v) {
+                Intent intent=new Intent(SettingActivity.this,ProtectPasswordActivity.class);
+                startActivity(intent);
             }
         });
-    }
+        exitLayout.setOnClickListener(new View.OnClickListener(){
 
-    private String readLoginInfo() {
-        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
-        return sp.getString("loginUser","");
-    }
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SettingActivity.this,"退出登录",Toast.LENGTH_SHORT);
+                new AlertDialog.Builder(SettingActivity.this)
+                        .setTitle("退出")
+                        .setMessage("确认退出登录？")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                     StatusUtils.clearLoginInfo(SettingActivity.this);
 
-    private void savePref(){
-        SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
-        editor.putBoolean("isLogin",false);
-        editor.apply();
-    }
-    private void initView() {
-        modifyPwd = findViewById(R.id.modify_password);
-        settingpp = findViewById(R.id.setting_password_protect);
-        logOut = findViewById(R.id.log_out_item);
-    }
+                                //返回我的界面
+                             Intent intent=new Intent();
+                             intent.putExtra("isLogin",false);
+                             setResult(RESULT_OK,intent);
+                             SettingActivity.this.finish();
 
-    private void initToolbar() {
-        toolbar = findViewById(R.id.title_bar);
+                            }
+                        })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+            }
+        });
+
+    }
+    private void initToolbar(){
+        toolbar = findViewById(R.id.title_toolbar);
         toolbar.setTitle("设置");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);//设置返回键
+//            actionBar.setHomeButtonEnabled(true);//设置是否是首页
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,3 +97,4 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 }
+

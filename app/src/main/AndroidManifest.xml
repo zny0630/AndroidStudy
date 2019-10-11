@@ -9,12 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
-        <activity android:name="com.example.myapplication.activity.ChangeUserInfoActivity"></activity>
-        <activity android:name="com.example.myapplication.activity.UserInfoActivity" />
-        <activity android:name="com.example.myapplication.activity.Forget_pwd_Activity$ProtectPasswordActivity" />
-        <activity android:name="com.example.myapplication.activity.Forget_pwd_Activity" />
-        <activity android:name="com.example.myapplication.activity.RegisterActivity$SettingActivity" />
-        <activity android:name="com.example.myapplication.activity.Forget_pwd_Activity$LoginActivity" />
+        <activity android:name="com.example.myapplication.activity.ExerciseDetailActivity" />
+        <activity android:name="com.example.myapplication.activity.ChangeUserActivity" />
+        <activity android:name="com.example.myapplication.activity.UserActivity" />
+        <activity android:name="com.example.myapplication.activity.ProtectPasswordActivity" />
+        <activity android:name="com.example.myapplication.activity.ForgetPasswordActivity" />
+        <activity android:name="com.example.myapplication.activity.SettingActivity" />
+        <activity android:name="com.example.myapplication.activity.LoginActivity" />
         <activity android:name="com.example.myapplication.activity.RegisterActivity" />
         <activity android:name="com.example.myapplication.activity.SplashActivity">
             <intent-filter>
@@ -23,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.myapplication.activity.Forget_pwd_Activity$MainActivity" />
+        <activity android:name="com.example.myapplication.activity.MainActivity" />
     </application>
 
 </manifest>

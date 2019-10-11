@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bgimage"
-    tools:context=".activity.modify_pwd_Activity">
+    tools:context="com.example.myapplication.activity.modify_pwd_Activity">
     <include layout="@layout/tool_bar"/>
     
     <EditText

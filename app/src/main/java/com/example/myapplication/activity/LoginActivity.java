@@ -1,13 +1,10 @@
 package com.example.myapplication.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,113 +13,69 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.helloworld.R;
-import com.example.myapplication.fragment.MySettingFragment;
 
-import edu.nit.myapplication.Utils.MD5Utils;
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText lgUsername,lgPassword;
-    private Button btnLogin;
-    private TextView registerNow;
+    private EditText etUsername, etPassword;
+    private Button btnLogin , btnRegister;
+    private TextView tUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        lgUsername = findViewById(R.id.login_user_name);
-        lgPassword = findViewById(R.id.login_password);
-        btnLogin = findViewById(R.id.login_btn);
-        registerNow = findViewById(R.id.register_now);
-        registerNow.setOnClickListener(this);
-        final Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
-        lgUsername.setText(username);
         initToolbar();
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        initView();
+//        initData();
+        btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                String username = lgUsername.getText().toString();
-                String password = lgPassword.getText().toString();
-                String spPwd = readPwd(username);
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(LoginActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
-                } else if (!spPwd.equals(MD5Utils.md5(password))){
-                    Toast.makeText(LoginActivity.this,"密码或用户名无效",Toast.LENGTH_SHORT).show();
-                } else if(TextUtils.isEmpty(spPwd)){
-                    Toast.makeText(LoginActivity.this,"请先注册",Toast.LENGTH_SHORT).show();
+            public void onClick(View v){
+                String username=etUsername.getText().toString();
+                String password=etPassword.getText().toString();
+                SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
+                String name = pref.getString("username", "");
+                String pwd = pref.getString("password", "");
+                if (TextUtils.isEmpty(username)) {
+                    Toast.makeText(LoginActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(LoginActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+//                } else if (!username.equals(name)) {
+//                    Toast.makeText(LoginActivity.this, "用户名错误"+username+","+name , Toast.LENGTH_SHORT).show();
+                } else if (!password.equals(password)) {
+                    Toast.makeText(LoginActivity.this, "密码错误"+password, Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    // 给bnt1添加点击响应事件
                     saveLoginStatus(username,true);
-                    final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-                    progressDialog.setMessage("登录中");
-                    progressDialog.setCancelable(true);
-                    progressDialog.show();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable(){
-                        @Override
-                        public void run(){
-                            progressDialog.dismiss();
-                            String username = lgUsername.getText().toString();
-                            Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-                            //返回到我的页面
-                            Intent intent1 = new Intent(LoginActivity.this, MySettingFragment.class);
-                            intent1.putExtra("isLogin",true);
-                            intent1.putExtra("loginUser",username);
-                            setResult(RESULT_OK,intent1);
-                            startActivity(intent1);
-                            LoginActivity.this.finish();
-                        }
-                    },5000);
+                    //跳转到我的页面
+                    Intent intent = new Intent();
+                    intent.putExtra("isLogin",true);
+                    intent.putExtra("loginUser",true);
+                   setResult(RESULT_OK,intent);
+                    LoginActivity.this.finish();
+
                 }
-            }
-
-            private void saveLoginStatus(String username, boolean isLogin) {
-                getSharedPreferences("data",MODE_PRIVATE)
-                        .edit()
-                        .putString("loginUser",username)
-                        .putBoolean("isLogin",isLogin)
-                        .apply();
-            }
-
-            private String readPwd(String username){
-                SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
-                return sp.getString(username,"");
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!=null){
-            String username = data.getStringExtra("username");
-            lgUsername.setText(username);
-//            lgUsername.setSelection(username.length());
-        }
+    private void saveLoginStatus(String username , boolean isLogin){
+        getSharedPreferences("userInfo" , MODE_PRIVATE)
+                .edit()
+                .putString("loginUser",username)
+                .putBoolean("isLogin" , isLogin)
+                .apply();
     }
-
-    //    private void initData() {
-//        String username = readPref();
-//        if (!TextUtils.isEmpty(username)){
-//            lgUsername.setText(username);
-//        }
-//    }
-//
-//    private String readPref() {
-//        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
-//        return sp.getString("username","");
-//    }
-
     private void initToolbar(){
-        toolbar = findViewById(R.id.title_bar);
+        toolbar = findViewById(R.id.title_toolbar);
         toolbar.setTitle("登录");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);//设置返回键
+//            actionBar.setHomeButtonEnabled(true);//设置是否是首页
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,11 +84,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-    @Override
-    public void onClick(View view) {
-        //处理register的监听
-        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-        startActivityForResult(intent,1);
+    private void initView(){
+        etUsername = findViewById(R.id.name);
+        etPassword = findViewById(R.id.password);
+        btnLogin =findViewById(R.id.login_button);
+        TextView tvRegister=findViewById(R.id.login_button);
+        tvRegister.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent =new Intent(LoginActivity.this,MainActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+        Button btnLogin = findViewById(R.id.register_login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 1 && resultCode == RESULT_OK && data !=null){
+            String username=data.getStringExtra("username");
+            etUsername.setText(username);
+   //         etUsername.setSelection(username.length());
+        }
+    }
+
+//    private void initData(){
+    //  Intent intent =getIntent();
+//        String username = intent().getStringExtra("username")
+//        if (!TextUtils.isEmpty(username)){
+//            etUsername.setText(username);
+//        }
+//    }
+    private String readPwd(String username){
+        SharedPreferences sp = getSharedPreferences("userInfo" , MODE_PRIVATE);
+        return sp.getString(username , "");
+    }
+    private void getUserName() {
+        Intent intent = getIntent();
+        String username_register = intent.getStringExtra("username");
+        if (username_register == null || username_register == "") {
+            tUsername.setText("");
+        } else {
+            tUsername.setText(username_register);
+        }
     }
 }
-
